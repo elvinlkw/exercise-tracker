@@ -1,7 +1,7 @@
 const express = require('express');
+const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const Exercises = require('../models/Exercise');
-const { findOne } = require('../models/User');
 const User = require('../models/User');
 
 // @route   GET /api/exercise
@@ -19,8 +19,18 @@ router.get('/', async (req, res) => {
 // @route   POST /api/exercise/create
 // @desc    Create a new exercise
 // @access  Public
-router.post('/create', async (req, res) => {
+router.post('/create', [
+  check('description', 'Description field cannot be empty').not().isEmpty(),
+  check('date', 'Date input is not a valid date').isDate({ format: 'YYYY-MM-DD' }),
+  check('duration', 'Duration cannot be empty').not().isEmpty(),
+  check('duration', 'Duration must be a number in minutes').isInt()
+], async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { username, description, duration, date } = req.body;
 
     // Retrieves Object ID of user
@@ -31,7 +41,7 @@ router.post('/create', async (req, res) => {
 
     const newExercise = new Exercises({ user: user._id, username: user.username, description, duration, date });
     newExercise.save();
-    return res.json({ msg: "Successfully posted Exercise", exercise: newExercise });
+    return res.json(newExercise);
   } catch (error) {
     res.status(500).send("Server Error");
   }
