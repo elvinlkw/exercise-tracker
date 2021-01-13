@@ -21,7 +21,7 @@ const ExerciseItem = ({
       <td>{duration}</td>
       <td><Moment format="YYYY/MM/DD">{date}</Moment></td>
       <td>
-        <Link to={`/exercise/${_id}`} type="button" className="btn btn-primary mr-1">Edit</Link>
+        <Link to={`/exercise/edit/${_id}`} type="button" className="btn btn-primary mr-1">Edit</Link>
         <button type="button" className="btn btn-danger" onClick={e => {
           e.preventDefault();
           dispatch(deleteExercise(_id));

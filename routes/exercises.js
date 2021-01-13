@@ -4,7 +4,7 @@ const router = express.Router();
 const Exercises = require('../models/Exercise');
 const User = require('../models/User');
 
-// @route   GET /api/exercise
+// @route   GET /api/exercises
 // @desc    Get all exercises
 // @access  Public
 router.get('/', async (req, res) => {
@@ -16,7 +16,19 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route   POST /api/exercise/create
+// @route   GET /api/exercises/:id
+// @desc    Get all exercises
+// @access  Public
+router.get('/:id', async (req, res) => {
+  try {
+    const exercise = await Exercises.findById(req.params.id);
+    return res.json(exercise);
+  } catch (error) {
+    res.status(500).send('Server Error');
+  }
+})
+
+// @route   POST /api/exercises/create
 // @desc    Create a new exercise
 // @access  Public
 router.post('/create', [
@@ -47,7 +59,7 @@ router.post('/create', [
   }
 });
 
-// @route   DELETE /api/exercise/:id
+// @route   DELETE /api/exercises/:id
 // @desc    Delete an exercise
 // @access  Public
 router.delete('/:id', async (req, res) => {
@@ -60,10 +72,20 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// @route   PUT /api/exercise/:id
+// @route   PUT /api/exercises/:id
 // @desc    Edit an exercise
 // @access  Public
-router.put('/:id', async (req, res) => {
+router.put('/:id', [
+  check('description', 'Description field cannot be empty').not().isEmpty(),
+  check('date', 'Date input is not a valid date').isDate({ format: 'YYYY-MM-DD' }),
+  check('duration', 'Duration cannot be empty').not().isEmpty(),
+  check('duration', 'Duration must be a number in minutes').isInt()
+], async (req, res) => {
+  const errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const { username, description, duration, date } = req.body;
 
   try {

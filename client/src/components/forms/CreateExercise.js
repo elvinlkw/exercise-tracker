@@ -21,7 +21,9 @@ const CreateExercise = () => {
 
   useEffect(() => {
     // Get list of users
-    dispatch(getUsers());
+    if(loading) {
+      dispatch(getUsers());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
     

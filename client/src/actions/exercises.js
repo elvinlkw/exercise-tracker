@@ -4,6 +4,8 @@ import {
   EXERCISE_ERROR,
   REMOVE_EXERCISE,
   CREATE_EXERCISE,
+  SET_EXERCISE,
+  CLEAR_EXCERCISE
 } from './types';
 import { setAlert } from './alert';
 
@@ -16,6 +18,24 @@ export const getExercises = () => async dispatch => {
     dispatch({ type: EXERCISE_ERROR });
     dispatch(setAlert('Could Not Retrieve List of Exercises', 'danger', 5000));
   }
+}
+
+// Retrieve specific exercise
+export const getExercise = id => async dispatch => {
+  try {
+    const res = await axios.get(`/api/exercises/${id}`);
+    dispatch({
+      type: SET_EXERCISE,
+      payload: res.data
+    });
+  } catch (error) {
+    dispatch(setAlert('Could Not Retrieve Exercise', 'danger', 5000));
+  }
+}
+
+// Clear Exercise
+export const clearExercise = () => dispatch => {
+  dispatch({ type: CLEAR_EXCERCISE });
 }
 
 // Create exercise log
@@ -32,6 +52,28 @@ export const createExercise = (formData, history) => async dispatch => {
     dispatch({ type: CREATE_EXERCISE, payload: res.data });
     dispatch(setAlert('Successfully Created Log', 'success'));
     history.push('/')
+  } catch (error) {
+    const errors = error.response.data.errors;
+    if(errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    }
+  }
+}
+
+// Edit exercise log
+export const editExercise = (id, formData, history) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  try {
+    await axios.put(`/api/exercises/${id}`, formData, config);
+
+    dispatch(setAlert('Successfully Edited Log', 'success'));
+    dispatch(getExercises());
+    history.push('/');
   } catch (error) {
     const errors = error.response.data.errors;
     if(errors) {
