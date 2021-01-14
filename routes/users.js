@@ -2,6 +2,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const User = require('../models/User');
+const Exercise = require('../models/Exercise');
 
 // @route   GET api/users
 // @desc    Get all users
@@ -31,7 +32,7 @@ router.post('/create',[
     // Checks if user is already created
     const isExist = await User.findOne({ username: req.body.username });
     if(isExist !== null) {
-      return res.status(403).json({ msg: "Username already taken" });
+      return res.status(403).json({ errors: [ { msg: "Username already taken" } ] });
     }
 
     const newUser = new User({
@@ -39,7 +40,7 @@ router.post('/create',[
     });
 
     await newUser.save();
-    return res.json({ msg: "User Created", user: newUser });
+    return res.json(newUser);
   } catch (error) {
     res.status(500).send('Server Error');
   }
@@ -50,6 +51,8 @@ router.post('/create',[
 // @access  Public
 router.delete('/:id', async (req, res) => {
   try {
+    // Delete Exercises
+    const experience = await Exercise.deleteMany({ user: req.params.id });
     const user = await User.findById(req.params.id);
     user.remove();
     res.json({ msg: "Successfully Removed User", user });
@@ -74,7 +77,7 @@ router.put('/:id', [
     const newUser = { username: req.body.username }
     const user = await User.findOneAndUpdate({ _id: req.params.id }, newUser, { new: true });
 
-    return res.json({ msg: "Successfully Updated", user });
+    return res.json(user);
     
   } catch (error) {
     res.status(500).send('Server Error');

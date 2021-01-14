@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Moment from 'react-moment';
 import { useDispatch } from 'react-redux';
+import moment from 'moment';
 import { deleteExercise } from '../../actions/exercises';
 
 const ExerciseItem = ({
@@ -19,7 +19,7 @@ const ExerciseItem = ({
       <td>{username}</td>
       <td>{description}</td>
       <td>{duration}</td>
-      <td><Moment format="YYYY/MM/DD">{date}</Moment></td>
+      <td>{moment(date, "YYYY-MM-DD").format("YYYY-MM-DD")}</td>
       <td>
         <Link to={`/exercise/edit/${_id}`} type="button" className="btn btn-primary mr-1">Edit</Link>
         <button type="button" className="btn btn-danger" onClick={e => {

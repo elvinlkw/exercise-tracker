@@ -33,12 +33,13 @@ const EditExercise = ({ match }) => {
 
   useEffect(() => {
     if(!ex_loading) {
+      console.log(exercise);
       setFormData({
         username: exercise.username,
         description: exercise.description,
         duration: exercise.duration,
         date: moment(exercise.date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
-      })
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ex_loading]);
@@ -78,7 +79,7 @@ const EditExercise = ({ match }) => {
         </div>
 
         <div className="form-group">
-          <input type="submit" value="Create Exercise Log" className="btn btn-primary" />
+          <input type="submit" value="Edot Exercise Log" className="btn btn-success" />
         </div>
       </form>
     </div>

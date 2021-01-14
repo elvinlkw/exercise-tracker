@@ -9,7 +9,7 @@ import Alert from './components/layout/Alert';
 import ExercisesList from './components/exercises-list/ExercisesList';
 import EditExercise from './components/forms/EditExercise';
 import CreateExercise from './components/forms/CreateExercise';
-import CreateUser from './components/forms/CreateUser';
+import Users from './components/users/Users';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -24,7 +24,7 @@ const App = () => {
           <Route path="/" exact component={ExercisesList} />
           <Route path="/exercise/edit/:id" component={EditExercise} />
           <Route path="/exercise/create" component={CreateExercise} />
-          <Route path="/user/create" component={CreateUser} />
+          <Route exact path="/users" component={Users} />
         </div>
       </Router>
     </Provider>
