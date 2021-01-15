@@ -15,9 +15,11 @@ app.use(express.json());
 // Routes
 const usersRoute = require('./routes/users');
 const exercisesRoute = require('./routes/exercises');
+const authRoute = require('./routes/auth');
 
 app.use('/api/users', usersRoute);
 app.use('/api/exercises', exercisesRoute);
+app.use('/api/auth', authRoute);
 
 // Starts the server
 app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));

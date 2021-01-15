@@ -1,13 +1,14 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
+const auth = require('../middleware/auth');
 const Exercises = require('../models/Exercise');
 const User = require('../models/User');
 
 // @route   GET /api/exercises
 // @desc    Get all exercises
 // @access  Public
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
   const exercises = await Exercises.find();
   return res.json(exercises);
@@ -19,7 +20,7 @@ router.get('/', async (req, res) => {
 // @route   GET /api/exercises/:id
 // @desc    Get all exercises
 // @access  Public
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
   try {
     const exercise = await Exercises.findById(req.params.id);
     return res.json(exercise);
@@ -32,10 +33,13 @@ router.get('/:id', async (req, res) => {
 // @desc    Create a new exercise
 // @access  Public
 router.post('/create', [
-  check('description', 'Description field cannot be empty').not().isEmpty(),
-  check('date', 'Date input is not a valid date').isDate({ format: 'YYYY-MM-DD' }),
-  check('duration', 'Duration cannot be empty').not().isEmpty(),
-  check('duration', 'Duration must be a number in minutes').isInt()
+  auth,
+  [
+    check('description', 'Description field cannot be empty').not().isEmpty(),
+    check('date', 'Date input is not a valid date').isDate({ format: 'YYYY-MM-DD' }),
+    check('duration', 'Duration cannot be empty').not().isEmpty(),
+    check('duration', 'Duration must be a number in minutes').isInt()
+  ]
 ], async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -62,7 +66,7 @@ router.post('/create', [
 // @route   DELETE /api/exercises/:id
 // @desc    Delete an exercise
 // @access  Public
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   try {
     const exercise = await Exercises.findById(req.params.id);
     exercise.remove();
@@ -76,10 +80,13 @@ router.delete('/:id', async (req, res) => {
 // @desc    Edit an exercise
 // @access  Public
 router.put('/:id', [
-  check('description', 'Description field cannot be empty').not().isEmpty(),
-  check('date', 'Date input is not a valid date').isDate({ format: 'YYYY-MM-DD' }),
-  check('duration', 'Duration cannot be empty').not().isEmpty(),
-  check('duration', 'Duration must be a number in minutes').isInt()
+  auth,
+  [
+    check('description', 'Description field cannot be empty').not().isEmpty(),
+    check('date', 'Date input is not a valid date').isDate({ format: 'YYYY-MM-DD' }),
+    check('duration', 'Duration cannot be empty').not().isEmpty(),
+    check('duration', 'Duration must be a number in minutes').isInt()
+  ]
 ], async (req, res) => {
   const errors = validationResult(req);
   if(!errors.isEmpty()) {

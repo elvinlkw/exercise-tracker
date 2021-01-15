@@ -1,13 +1,14 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
+const auth = require('../middleware/auth');
 const User = require('../models/User');
 const Exercise = require('../models/Exercise');
 
 // @route   GET api/users
 // @desc    Get all users
 // @access  Public
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const users = await User.find();
     return res.json(users);
@@ -19,8 +20,11 @@ router.get('/', async (req, res) => {
 // @route   POST /api/users/create
 // @desc    Create a new user
 // @access  Public
-router.post('/create',[
-  check('username', 'Username has to be 3 or higher characters').isLength({ min: 3 })
+router.post('/create', [
+  auth,
+  [
+    check('username', 'Username has to be 3 or higher characters').isLength({ min: 3 })
+  ]
 ], async (req, res) => {
   // Error checking
   const errors = validationResult(req);
@@ -49,7 +53,7 @@ router.post('/create',[
 // @route   DELETE /api/users/:id
 // @desc    Delete a user
 // @access  Public
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   try {
     // Delete Exercises
     const experience = await Exercise.deleteMany({ user: req.params.id });
@@ -65,7 +69,10 @@ router.delete('/:id', async (req, res) => {
 // @desc    Edit a user
 // @access  Public
 router.put('/:id', [
-  check('username', 'Username has to be 3 or higher characters').isLength({ min: 3 })
+  auth,
+  [
+    check('username', 'Username has to be 3 or higher characters').isLength({ min: 3 })
+  ]
 ], async (req, res) => {
   const errors = validationResult(req);
 
