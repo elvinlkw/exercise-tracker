@@ -93,6 +93,15 @@ router.post('/change-password', [
       return res.status(400).json({ errors: [{ msg: 'Current Password do not match' }] });
     }
 
+    // Check if new password is equal old password
+    if(old_password === new_password) {
+      return res.status(403).json({ errors: [{ msg: 'Cannot change password to current password' }] });
+    }
+
+    if(user.id === "600261a9df48c287bb6cde54" || user.email === "test@test.com") {
+      return res.status(403).json({ errors: [{ msg: 'Password of the Test User cannot be changed!' }] });
+    }
+
     // Hash password
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(new_password, salt);
@@ -171,7 +180,11 @@ router.delete('/:id', auth, async (req, res) => {
       return res.status(403).json({ msg: "You are not allowed to perform this operation" });
     }
 
-    await Auth.findByIdAndRemove(req.params.id);
+    if(req.user.id === '600261a9df48c287bb6cde54') {
+      return res.status(403).json({ msg: "The Test User cannot be deleted!" });
+    }
+
+    await Auth.findByIdAndRemove(req.user.id);
     res.json({ msg: "Successfully Deleted" });
 
   } catch (error) {

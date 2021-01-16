@@ -56,7 +56,7 @@ router.post('/create', [
 router.delete('/:id', auth, async (req, res) => {
   try {
     // Delete Exercises
-    const experience = await Exercise.deleteMany({ user: req.params.id });
+    await Exercise.deleteMany({ user: req.params.id });
     const user = await User.findById(req.params.id);
     user.remove();
     res.json({ msg: "Successfully Removed User", user });

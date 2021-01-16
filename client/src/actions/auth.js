@@ -102,7 +102,6 @@ export const updatePassword = ( curr_password, password, setFormData ) => async 
   } catch (error) {
     const errors = error.response.data.errors;
     if(errors) {
-      console.log(errors);
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
     }
   }
@@ -113,9 +112,9 @@ export const deleteAccount = id => async dispatch => {
   try {
     await axios.delete(`/api/auth/${id}`);
     dispatch(setAlert('Successfully deleted User', 'success'));
-    dispatch({ type: LOGOUT });
+    // dispatch({ type: LOGOUT });
   } catch (error) {
-    dispatch(setAlert('Unable to Delete User', 'danger'));
+    dispatch(setAlert(error.response.data.msg, 'danger'));
   }
 }
 
