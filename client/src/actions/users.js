@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CREATE_USER, DELETE_USER, GET_USERS, USER_ERROR, CHANGE_MODE } from './types';
+import { CREATE_USER, DELETE_USER, GET_USERS, USER_ERROR, CHANGE_MODE, UPDATE_FILTER } from './types';
 import { setAlert } from './alert';
 import { getExercises } from './exercises';
 
@@ -70,6 +70,14 @@ export const editUser = (id, username) => async dispatch => {
       console.log({error});
     }
   }
+}
+
+// Update Filter for checked
+export const updateFilter = (username, checked, users) => dispatch => {
+  dispatch({
+    type: UPDATE_FILTER,
+    payload: { username, checked }
+  });
 }
 
 // Toggle Mode between Edit and Create

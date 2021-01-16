@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const auth = require('../middleware/auth');
@@ -6,12 +7,25 @@ const Exercises = require('../models/Exercise');
 const User = require('../models/User');
 
 // @route   GET /api/exercises
-// @desc    Get all exercises
+// @desc    Get all exercises or only select users
 // @access  Public
 router.get('/', auth, async (req, res) => {
   try {
-  const exercises = await Exercises.find();
-  return res.json(exercises);
+    let exercises;
+    // if there are any query params
+    if(req.query.users) {
+      // Returns only selected users by ids
+      const users = req.query.users.split('--');
+      exercises = await Exercises.find({
+        'user': {
+          $in: users.map(id => mongoose.Types.ObjectId(id))
+        }
+      })
+    } else {
+      // Returns all objects
+      exercises = await Exercises.find();
+    }
+    return res.json(exercises);
   } catch (error) {
     res.status(500).send('Server Error');
   }
@@ -22,6 +36,7 @@ router.get('/', auth, async (req, res) => {
 // @access  Public
 router.get('/:id', auth, async (req, res) => {
   try {
+    const users = req.query.users;
     const exercise = await Exercises.findById(req.params.id);
     return res.json(exercise);
   } catch (error) {

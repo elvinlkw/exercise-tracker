@@ -2,7 +2,8 @@ import {
   CREATE_USER,
   GET_USERS,
   DELETE_USER,
-  CHANGE_MODE
+  CHANGE_MODE,
+  UPDATE_FILTER
 } from '../actions/types';
 
 const initialState = {
@@ -11,7 +12,7 @@ const initialState = {
   user: {},
   user_loading: true,
   edit_mode: 0,
-  edit_user: null
+  edit_user: null,
 }
 
 const userReducer = (state = initialState, action) => {
@@ -21,23 +22,31 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        users: payload
+        users: payload.map(user => ({ ...user, checked: false })),
       }
     case CREATE_USER:
       return {
-        ...state,
-        users: [...state.users, payload]
+        ...state, 
+        users: [...state.users, { ...payload, checked: false }],
       }
     case DELETE_USER:
       return {
         ...state,
-        users: state.users.filter(user => user._id !== payload)
+        users: state.users.filter(user => user._id !== payload),
       }
     case CHANGE_MODE:
       return {
         ...state,
         edit_mode: payload.mode,
         edit_user: payload.user
+      }
+    case UPDATE_FILTER:
+      return {
+        ...state,
+        users: [...state.users].map(user => {
+          if(user.username === payload.username) return { ...user, checked: payload.checked };
+          else return user;
+        })
       }
     default: 
       return state;

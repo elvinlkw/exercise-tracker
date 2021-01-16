@@ -7,8 +7,8 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: 'test@test.com',
+    password: 'password'
   });
   const [inputType, setType] = useState('password');
   const { email, password } = formData;

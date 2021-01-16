@@ -10,9 +10,15 @@ import {
 import { setAlert } from './alert';
 
 // Get list of all exercises logged
-export const getExercises = () => async dispatch => {
+export const getExercises = (users_param='') => async dispatch => {
   try {
-    const res = await axios.get('/api/exercises');
+    let res;
+    if(users_param===''){
+      res = await axios.get('/api/exercises');
+    } else {
+      const params = { users: users_param }
+      res = await axios.get('/api/exercises', {params});
+    }
     dispatch({ type: SET_EXERCISES, payload: res.data });
   } catch (error) {
     dispatch({ type: EXERCISE_ERROR });

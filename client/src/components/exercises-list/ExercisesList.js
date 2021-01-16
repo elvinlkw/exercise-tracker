@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getExercises } from '../../actions/exercises';
 import Spinner from '../layout/Spinner';
 import ExerciseItem from './ExerciseItem';
+import FilterUsers from './FilterUsers';
 import Pagination from './Pagination';
 
 const ExercisesList = () => {
@@ -46,6 +47,7 @@ const ExercisesList = () => {
   return loading ? (<Spinner />) : (
     <div>
       <h2>Logged Exercises</h2>
+      <FilterUsers />
       <Pagination currentPage={currentPage} pageNumber={pageNumber} paginate={handlePaginate} />
       <table className="table">
         <thead>
