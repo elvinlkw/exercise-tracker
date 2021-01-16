@@ -3,7 +3,8 @@ import {
   GET_USERS,
   DELETE_USER,
   CHANGE_MODE,
-  UPDATE_FILTER
+  UPDATE_FILTER,
+  CLEAR_FILTER
 } from '../actions/types';
 
 const initialState = {
@@ -47,6 +48,11 @@ const userReducer = (state = initialState, action) => {
           if(user.username === payload.username) return { ...user, checked: payload.checked };
           else return user;
         })
+      }
+    case CLEAR_FILTER:
+      return {
+        ...state,
+        users: [...state.users].map(user => ({ ...user, checked: false }))
       }
     default: 
       return state;

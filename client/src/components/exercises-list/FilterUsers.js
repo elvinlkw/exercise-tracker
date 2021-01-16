@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers, updateFilter } from '../../actions/users';
+import { getUsers, updateFilter, clearFilter } from '../../actions/users';
 import { getExercises } from '../../actions/exercises';
 
 const FilterUsers = () => {
@@ -25,6 +25,13 @@ const FilterUsers = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [users])
 
+  const handleChange = e => {
+    toggleShowAll(e.target.value);
+    if(e.target.value === 'showAll') {
+      dispatch(clearFilter());
+    }
+  }
+
   const handleCheckbox = e => {
     dispatch(updateFilter(e.target.value, e.target.checked, users));
   }
@@ -33,11 +40,11 @@ const FilterUsers = () => {
     <Fragment>
       <div className="mt-3 mb-2">
         <div className="form-check form-check-inline">
-          <input className="form-check-input" type="radio" id="show_all" value="showAll" checked={showAll === 'showAll'} onChange={e => toggleShowAll(e.target.value)} />
+          <input className="form-check-input" type="radio" id="show_all" value="showAll" checked={showAll === 'showAll'} onChange={handleChange } />
           <label className="form-check-label" htmlFor="show_all" style={style} >Show All Users</label>
         </div>
         <div className="form-check form-check-inline">
-          <input className="form-check-input" type="radio" id="show_selected" value="showSelected" checked={showAll === 'showSelected'} onChange={e => toggleShowAll(e.target.value)} />
+          <input className="form-check-input" type="radio" id="show_selected" value="showSelected" checked={showAll === 'showSelected'} onChange={handleChange} />
           <label className="form-check-label" htmlFor="show_selected" style={style} >Selected Users</label>
         </div>
       </div>

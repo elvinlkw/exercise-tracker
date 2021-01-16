@@ -17,6 +17,7 @@ export const DELETE_USER = 'DELETE_USER';
 export const USER_ERROR = 'USER_ERROR';
 export const CHANGE_MODE = 'CHANGE_MODE';
 export const UPDATE_FILTER = 'UPDATE_FILTER';
+export const CLEAR_FILTER = 'CLEAR_FILTER';
 
 // AUTH REDUCER
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
