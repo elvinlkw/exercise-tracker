@@ -112,7 +112,7 @@ export const deleteAccount = id => async dispatch => {
   try {
     await axios.delete(`/api/auth/${id}`);
     dispatch(setAlert('Successfully deleted User', 'success'));
-    // dispatch({ type: LOGOUT });
+    dispatch({ type: LOGOUT });
   } catch (error) {
     dispatch(setAlert(error.response.data.msg, 'danger'));
   }
