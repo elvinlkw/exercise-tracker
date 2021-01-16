@@ -4,6 +4,7 @@ This project was built to showcase Frontend and Backend skills of web developmen
 The application was built on NodeJS + Express + MongoDB as the Backend Technology and ReactJS with Redux, redux-thunk and bootstrap as the Front End Technology.
 Stack: MERN
 
+# Dependencies
 ## ReactJS Dependencies
 The dependencies used for the front end are as follows:
 * axios             - To make requests from front end to backend
@@ -20,16 +21,25 @@ The dependencies used for the backend are as follows:
 * mongoose          - used to be able to manipulate mondoDB collections
 * dotenv            - Environmental Variables stored within
 
-## Hosting
+# Hosting
 This application is currently being hosted using Heroku.
 
 A demo of the application can be viewed at
 URL: https://elikamwa-exercise-tracker.herokuapp.com
 
+# Purpose of the App
+This application was built to showcase full stack programming skills and to showcase how an application is built from the front end and backend.
+
+The application makes use of modern MERN stack as well as redux-thunk to make asynchronous actions and jsonwebtoken to help with authentication.
+
 # How to Use
 The application has been implemented using Authentication and JSONWebToken to be able to access it.
 
 You will require to register or login using an account to be able to access the website. If you do not wish to create an account, you can use the test account in the database to be able to navigate through the web application.
+
+The Test User was created with limited capability and below are his credentials:
+- Email: test@test.com
+- Password: password
 
 ## Authentication
 Authenticating to the web application will provide you with a JSON web token that you will be using to navigate throughout the application. The web token is valid for 24 hours. After the 24 hours, it will automatically expire and will ask you to re-authenticate on your next login.
@@ -47,4 +57,3 @@ Once you have a user created, you can go to the Create Exercises Log tab to be a
 After an exercise has been created, you are able to view the list of all the exercises created
 
 // TODO - Being able to sort the exercises list when clicking on the table header
-// TODO - Add some radio buttons to only display exercises for a requested user
